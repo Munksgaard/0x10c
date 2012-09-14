@@ -9,17 +9,23 @@ Version 1.1 (Check 0x10c.com for updated versions)
 * stack pointer (SP)
 * overflow (O)
 
-In this document, anything within [brackets] is shorthand for "the value of the RAM at the location of the value inside the brackets".
-For example, SP means stack pointer, but [SP] means the value of the RAM at the location the stack pointer is pointing at.
+In this document, anything within [brackets] is shorthand for "the
+value of the RAM at the location of the value inside the brackets".
+For example, SP means stack pointer, but [SP] means the value of the
+RAM at the location the stack pointer is pointing at.
 
-Whenever the CPU needs to read a word, it reads [PC], then increases PC by one. Shorthand for this is [PC++].
-In some cases, the CPU will modify a value before reading it, in this case the shorthand is [++PC].
+Whenever the CPU needs to read a word, it reads [PC], then increases
+PC by one. Shorthand for this is [PC++].  In some cases, the CPU will
+modify a value before reading it, in this case the shorthand is
+[++PC].
 
-Instructions are 1-3 words long and are fully defined by the first word.
-In a basic instruction, the lower four bits of the first word of the instruction are the opcode,
-and the remaining twelve bits are split into two six bit values, called a and b.
-a is always handled by the processor before b, and is the lower six bits.
-In bits (with the least significant being last), a basic instruction has the format: bbbbbbaaaaaaoooo
+Instructions are 1-3 words long and are fully defined by the first
+word.  In a basic instruction, the lower four bits of the first word
+of the instruction are the opcode, and the remaining twelve bits are
+split into two six bit values, called a and b.  a is always handled by
+the processor before b, and is the lower six bits.  In bits (with the
+least significant being last), a basic instruction has the format:
+bbbbbbaaaaaaoooo
 
 
 
@@ -37,14 +43,22 @@ Values: (6 bits)
          0x1f: next word (literal)
     0x20-0x3f: literal value 0x00-0x1f (literal)
     
-* "next word" really means "[PC++]". These increase the word length of the instruction by 1. 
-* If any instruction tries to assign a literal value, the assignment fails silently. Other than that, the instruction behaves as normal.
-* All values that read a word (0x10-0x17, 0x1e, and 0x1f) take 1 cycle to look up. The rest take 0 cycles.
-* By using 0x18, 0x19, 0x1a as POP, PEEK and PUSH, there's a reverse stack starting at memory location 0xffff. Example: "SET PUSH, 10", "SET X, POP"
+* "next word" really means "[PC++]". These increase the word length of
+  the instruction by 1.
+
+* If any instruction tries to assign a literal value, the assignment
+  fails silently. Other than that, the instruction behaves as normal.
+
+* All values that read a word (0x10-0x17, 0x1e, and 0x1f) take 1 cycle
+  to look up. The rest take 0 cycles.
+
+* By using 0x18, 0x19, 0x1a as POP, PEEK and PUSH, there's a reverse
+  stack starting at memory location 0xffff. Example: "SET PUSH, 10",
+  "SET X, POP"
 
 
 
-Basic opcodes: (4 bits)
+Basic opcodes: (4 bitsP)
     0x0: non-basic instruction - see below
     0x1: SET a, b - sets a to b
     0x2: ADD a, b - sets a to a+b, sets O to 0x0001 if there's an overflow, 0x0 otherwise
@@ -69,7 +83,9 @@ Basic opcodes: (4 bits)
     
 
     
-Non-basic opcodes always have their lower four bits unset, have one value and a six bit opcode.
+Non-basic opcodes always have their lower four bits unset, have one
+value and a six bit opcode.
+
 In binary, they have the format: aaaaaaoooooo0000
 The value (a) is in the same six bit format as defined earlier.
 
@@ -137,7 +153,7 @@ A: Sure! Here's some sample assembler, and a memory dump of the compiled code:
   Full memory dump:
   
         0000: 7c01 0030 7de1 1000 0020 7803 1000 c00d
-        0008: 7dc1 001a a861 7c01 2000 2161 2000 8463
+        0008: 7dcq 001a a861 7c01 2000 2161 2000 8463
         0010: 806d 7dc1 000d 9031 7c10 0018 7dc1 001a
         0018: 9037 61c1 7dc1 001a 0000 0000 0000 0000
         
